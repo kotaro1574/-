@@ -16,7 +16,7 @@ class User < ApplicationRecord
   
   def follow(other_user)
     unless self == other_user
-      relationship = self.relationships.find_or_create_by(follow_id: other_user.id)
+      self.relationships.find_or_create_by(follow_id: other_user.id)
     end
   end
   
@@ -27,5 +27,9 @@ class User < ApplicationRecord
   
   def following?(other_user)
     self.followings.include?(other_user)
+  end
+  
+  def feed_microposts
+    Micropost.where(user_id: self.following_ids + [self.id])
   end
 end
