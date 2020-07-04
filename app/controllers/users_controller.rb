@@ -39,9 +39,25 @@ class UsersController < ApplicationController
     counts(@user)
   end
   
+  def likes
+    micropost = Micropost.find(params[:micropost_id])
+    current_user.like(micropost)
+    flash[:success] = '投稿をお気に入りしました。'
+    redirect_to root_url
+  end
+
+  def unlike
+    micropost = Micropost.find(params[:micropost_id])
+    current_user.unlike(micropost)
+    flash[:success] = '投稿のお気に入りを解除しました。'
+    redirect_to root_url
+  end
+    
+  
   private
   
   def user_params
     params.require(:user).permit(:name, :email, :password, :password_confirmation)
   end
+  
 end
